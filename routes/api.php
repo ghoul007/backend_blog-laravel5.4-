@@ -14,8 +14,6 @@ use Illuminate\Http\Request;
 */
 //middleware('auth:api')->
 Route::get('/user', function (Request $request) {
-
-
     return ['name'=>'ahmed'];
 //    return $request->user();
 });
