@@ -10,4 +10,6 @@
 ## install package JWT
 
  1- composer require tymon/jwt-auth
- 2- php artisan jwt:generate
+ 2- php artisan vendor:publish
+ 3- php artisan jwt:generate
+ 
