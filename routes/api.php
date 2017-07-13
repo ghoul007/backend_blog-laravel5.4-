@@ -14,9 +14,17 @@ use Illuminate\Http\Request;
 */
 //middleware('auth:api')->
 Route::get('/user', function (Request $request) {
-    return ['name'=>'ahmed'];
+
+    $token = \Tymon\JWTAuth\Facades\JWTAuth::getToken();
+
+    $user= \Tymon\JWTAuth\Facades\JWTAuth::toUser($token);
+
+    return $user;
 //    return $request->user();
 })->middleware('jwt.auth');
+
+
+
 
 Route::post('/authenticate',[
     'uses'=>'ApiAuthController@authentificate'
