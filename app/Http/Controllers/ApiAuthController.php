@@ -33,18 +33,14 @@ class ApiAuthController extends Controller
         $email = request()->email;
         $name = request()->name;
         $password = request()->password;
+        $user= User::create([
+            'name'=>$name,
+            'email'=>$email,
+            'password'=>bcrypt($password)
+        ] );
+        $token = JWTAuth::fromUser($user);
 
-$user= User::create([
-    'name'=>$name,
-    'email'=>$email,
-    'password'=>$password
-] );
-
-
-$token = JWTAuth::fromUser($user);
-
-
-return response()->json(['token'=>$token],200);
+        return response()->json(['token'=>$token],200);
     }
 }
 
