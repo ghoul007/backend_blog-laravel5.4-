@@ -58,7 +58,7 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        //
+        return fractal(Movie::find($id), new MovieTransformer());
     }
 
     /**
