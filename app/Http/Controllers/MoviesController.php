@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Movie;
 use App\Transformers\MovieTransformer;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class MoviesController extends Controller
 {
@@ -16,12 +18,8 @@ class MoviesController extends Controller
     public function index()
     {
         return fractal(Movie::all(), new MovieTransformer())
-
             ->respond(200);
     }
-
-
-
 
 
     /**
@@ -31,24 +29,31 @@ class MoviesController extends Controller
      */
     public function create()
     {
-        //
+
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $user = JWTAuth::toUSer(JWTAuth::getToken());
+
+      $movie =  $user->movies()->create([
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+        return fractal($movie, new MovieTransformer());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -59,7 +64,7 @@ class MoviesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -70,8 +75,8 @@ class MoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,7 +87,7 @@ class MoviesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
