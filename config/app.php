@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class,
 
         Laravel\Tinker\TinkerServiceProvider::class,
 
@@ -228,7 +229,20 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-
+        'Fractal' => Spatie\Fractal\FractalFacade::class,
     ],
 
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+

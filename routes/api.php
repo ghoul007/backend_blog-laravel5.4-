@@ -35,6 +35,21 @@ Route::post('/register',[
 ]);
 
 
+Route::get('/movies',function (){
+// return \App\Movie::all();
+ return fractal(\App\Movie::all(), new \App\Transformers\MovieTransformer());
+})->middleware('jwt.auth');
+
+
+
+
+
+
+
+
+
+
+
 
 
 

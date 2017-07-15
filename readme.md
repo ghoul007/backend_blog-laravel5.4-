@@ -13,3 +13,5 @@
  2- php artisan vendor:publish
  3- php artisan jwt:generate
  
+ 4-php artisan migrate:refresh --seed
+ 5- composer require spatie/laravel-fractal
