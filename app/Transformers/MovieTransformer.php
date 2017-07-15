@@ -18,7 +18,8 @@ class MovieTransformer extends TransformerAbstract
            'id'=>$movie->id,
             'title'=>$movie->title,
             'description'=>$movie->description,
-            'date'=>$movie->created_at->toFormattedDateString()
+            'date'=>$movie->created_at->toFormattedDateString(),
+            'creator'=> fractal($movie->user, new UserTransformer())
         ];
     }
 }

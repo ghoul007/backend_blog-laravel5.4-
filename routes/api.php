@@ -41,6 +41,7 @@ Route::get('/movies',function (){
 })->middleware('jwt.auth');
 
 
+Route::resource('movies','MoviesController');
 
 
 

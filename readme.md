@@ -15,3 +15,6 @@
  
  4-php artisan migrate:refresh --seed
  5- composer require spatie/laravel-fractal
+ 6- php artisan make:transformer MovieTransformer
+ 7- php artisan make:controller MoviesController --resource
+ 8- php artisan make:transformer UserTransformer
