@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Movie;
 use App\Transformers\MovieTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -43,7 +44,7 @@ class MoviesController extends Controller
     {
         $user = JWTAuth::toUSer(JWTAuth::getToken());
 
-      $movie =  $user->movies()->create([
+        $movie = $user->movies()->create([
             'title' => $request->title,
             'description' => $request->description
         ]);
@@ -58,7 +59,14 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-        return fractal(Movie::find($id), new MovieTransformer());
+
+        try {
+            $movie = Movie::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Movie not found']);
+
+        }
+        return fractal($movie, new MovieTransformer());
     }
 
     /**
