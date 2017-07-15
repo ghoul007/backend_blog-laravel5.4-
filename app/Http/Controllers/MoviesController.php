@@ -117,6 +117,33 @@ class MoviesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $movie = Movie::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Movie not found']);
+
+        }
+
+        $user = JWTAuth::toUSer(JWTAuth::getToken());
+        if ($user->id !== $movie->user_id) {
+            return response()->json(['error' => 'Uauthenticated'],401);
+        }
+
+
+        $movie->delete();
+        return response()->json(['status'=>true],200);
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
