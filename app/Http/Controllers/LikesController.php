@@ -38,7 +38,25 @@ class LikesController extends Controller
 
     public function unlike()
     {
+        $user = JWTAuth::toUser(JWTAuth::getToken());
+        $movie_id = request('movie_id');
 
+        try {
+            $movie = Movie::findOrFail($movie_id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Movie not found']);
+        }
+
+        $like = Like::where('user_id', $user->id)
+            ->where('movie_id', $movie->id)
+            ->first();
+        if (!$like) {
+            return response()->json(['error' => 'Some error occured']);
+        }
+
+        $like->delete();
+        return response()->json([
+            'status' => true]);
 
     }
 
