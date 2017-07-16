@@ -41,6 +41,14 @@ Route::get('/movies',function (){
 })->middleware('jwt.auth');
 
 
+Route::post('/like',[
+    'uses'=>'LikesController@like'
+]);
+
+Route::post('/unlike',[
+    'uses'=>'LikesController@unlike'
+]);
+
 Route::resource('movies','MoviesController');
 
 

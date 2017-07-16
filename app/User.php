@@ -30,8 +30,11 @@ class User extends Authenticatable
 
     public function movies()
     {
-
         return $this->hasMany('App\Movie');
+    }
+
+    public function likes(){
+        return $this->hasMany('App\Like');
     }
 }
 
