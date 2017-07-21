@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Actor;
 use App\Movie;
-use App\Transformers\MovieTransformer;
+use App\Transformers\ActorTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
-
-class MoviesController extends Controller
+class ActorsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +19,10 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        return fractal(Movie::all(), new MovieTransformer())
+        return fractal(Actor::all(), new ActorTransformer())
             ->respond(200);
-    }
 
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -31,8 +31,7 @@ class MoviesController extends Controller
      */
     public function create()
     {
-
-
+        //
     }
 
     /**
@@ -43,12 +42,15 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
-        $user = JWTAuth::toUSer(JWTAuth::getToken());
-        $movie = $user->movies()->create([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
-        return fractal($movie, new MovieTransformer());
+        $user = JWTAuth::toUser(JWTAuth::getToken());
+        $movie_id = $request->movie_id;
+        $movie = DB::table('movies')->where('id', $movie_id)->first();
+        $actor = new Actor();
+        $actor->name = $request->name;
+        $actor->age = $request->age;
+        $actor->save();
+        $actor->movies()->attach($movie);
+        return fractal($actor, new ActorTransformer());
     }
 
     /**
@@ -59,14 +61,7 @@ class MoviesController extends Controller
      */
     public function show($id)
     {
-
-        try {
-            $movie = Movie::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Movie not found']);
-
-        }
-        return fractal($movie, new MovieTransformer());
+        //
     }
 
     /**
@@ -89,24 +84,22 @@ class MoviesController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
-            $movie = Movie::findOrFail($id);
+            $actor = Actor::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Movie not found']);
+            return response()->json(['error' => 'Actor not found']);
 
         }
 
         $user = JWTAuth::toUSer(JWTAuth::getToken());
-        if ($user->id !== $movie->user_id) {
+        if (!$user->id) {
             return response()->json(['error' => 'Uauthenticated'],401);
         }
-        $movie->title = $request->title;
-        $movie->description = $request->description;
-        $movie->save();
+        $actor->name = $request->name;
+        $actor->age = $request->age;
+        $actor->save();
 
-        return fractal($movie, new MovieTransformer());
-
+        return fractal($actor, new ActorTransformer());
     }
 
     /**
@@ -118,32 +111,20 @@ class MoviesController extends Controller
     public function destroy($id)
     {
         try {
-            $movie = Movie::findOrFail($id);
+            $actor = Actor::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Movie not found']);
+            return response()->json(['error' => 'Actor not found']);
 
         }
 
         $user = JWTAuth::toUSer(JWTAuth::getToken());
-        if ($user->id !== $movie->user_id) {
+        if (!$user->id) {
             return response()->json(['error' => 'Uauthenticated'],401);
         }
 
 
-        $movie->delete();
+        $actor->delete();
         return response()->json(['status'=>true],200);
-
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-

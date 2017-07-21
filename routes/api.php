@@ -50,6 +50,7 @@ Route::post('/unlike',[
 ]);
 
 Route::resource('movies','MoviesController');
+Route::resource('actors','ActorsController');
 
 
 
