@@ -17,10 +17,16 @@ class Movie extends Model
     }
 
 
-
-    public function likes(){
+    public function likes()
+    {
 
         return $this->hasMany('App\Like');
+    }
+
+
+    public function actors()
+    {
+        return $this->belongsToMany('App\Actor')->withTimestamps();
     }
 }
 
