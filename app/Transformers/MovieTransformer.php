@@ -20,7 +20,8 @@ class MovieTransformer extends TransformerAbstract
             'description'=>$movie->description,
             'date'=>$movie->created_at->toFormattedDateString(),
             'creator'=> fractal($movie->user, new UserTransformer()),
-            'like'=>fractal($movie->likes , new LikeTransformer())
+            'like'=>fractal($movie->likes , new LikeTransformer()),
+//            'actors'=>fractal($movie->actors , new ActorTransformer()),
         ];
     }
 }
