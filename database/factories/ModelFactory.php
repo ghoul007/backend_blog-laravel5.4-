@@ -31,6 +31,14 @@ $factory->define(App\Movie::class, function (Faker\Generator $faker) {
     ];
 });
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Actor::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'age' => $faker->numberBetween(10,50)
+    ];
+});
+
 
 
 
